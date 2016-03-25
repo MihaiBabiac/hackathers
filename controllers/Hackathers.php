@@ -21,5 +21,6 @@ class Hackathers extends CI_Controller {
 		}
 
 		$this->load->view('LC_list', $data);
+        //lets see what happens
 	}
 }
