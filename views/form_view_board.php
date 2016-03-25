@@ -9,7 +9,7 @@
 		float: right;
 	}
 	div.inline {
-		display: inline;
+		display: intextline;
 	}
 </style>
 
