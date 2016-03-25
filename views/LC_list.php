@@ -56,7 +56,7 @@ foreach ($LC as $row)
 	echo "</table>";
 
 }
-/*
+echo "<br><br><br>" ;
 echo "<table border='1'>";
 foreach ($LC as $row)
 {
@@ -67,7 +67,6 @@ foreach ($LC as $row)
 		{
 			echo "<th>" . $description[$key] . "</th>";
 		}
-		echo "<th>" . "Current board date" . "</th>";
 		echo "</tr>";
 	}
 	
@@ -76,13 +75,12 @@ foreach ($LC as $row)
 	{
 		echo "<td>" . $value . "</td>";
 	}
-	echo "<td>" . $current_board_changes[$row->lc_id]->board_change_date . "</td>";
 	echo "</tr>";
 
 	$i++;
 }
 echo "</table>";
-*/ 
+
 
 
 /*

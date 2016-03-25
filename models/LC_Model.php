@@ -37,9 +37,18 @@ class LC_Model extends CI_Model { //name of file with capital beginning
 						  ->get("position");
 		return $query;
 	}
-
-
+    
+    public function add_info()
+    {
+            $this->db->insert('lc', $_POST); //genius idea !!!!!
+        
+    }
 }
+
+
+
+
+
 
 
 
