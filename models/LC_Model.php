@@ -43,6 +43,13 @@ class LC_Model extends CI_Model { //name of file with capital beginning
             $this->db->insert('lc', $_POST); //genius idea !!!!!
         
     }
+    
+    public function add_board_info()
+    {
+        $this->db->insert('position',$_POST); //again the genius idea !!
+    }
+    
+    
 }
 
 

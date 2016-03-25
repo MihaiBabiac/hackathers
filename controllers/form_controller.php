@@ -9,7 +9,7 @@ class Form_controller extends CI_Controller
         $this->load->model('LC_Model');
 	}
     
-    public function forming()
+    public function forming()           //the controller looks here
     {
         $this->load->view('form_view');
     }
@@ -18,6 +18,19 @@ class Form_controller extends CI_Controller
     {
         $this->LC_Model->add_info();
     }
+    
+    //adding board form
+    
+    public function board_forming()         //the controller looks here
+    {
+        $this->load->view('form_view_board');
+    
+    }
+    
+    public function  display_added_board_info()
+    {
+         $this->LC_Model->add_board_info();
+    }
 }
-
 ?>
+
