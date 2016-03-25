@@ -15,12 +15,22 @@ class Hackathers extends CI_Controller {
 
 		$current_boards = array();
 		$current_board_changes = array();
+		$has_board = array();
 
 		foreach ($data["LC"] as $row) {
 			$id = $row->lc_id;
 
-			$current_board_change = $this->LC_Model->get_board_change_at_date($id, date("y-m-d"))->result()[0];
+			$current_board_change = $this->LC_Model->get_board_change_at_date($id, date("y-m-d"));
+			if($current_board_change->num_rows() == 0)
+			{
+				$has_board[$id] = 0;
+				continue;
+			}
 			
+			$has_board[$id] = 1;
+			
+			$current_board_change = $current_board_change->result()[0];
+
 			$current_board_changes[$id] = $current_board_change;
 			//print_r($current_board_change);
 			$current_board = $this->LC_Model->get_board($current_board_change->board_change_id);
@@ -29,6 +39,8 @@ class Hackathers extends CI_Controller {
 
 		$data["current_boards"] = $current_boards;
 		$data["current_board_changes"] = $current_board_changes;
+		$data["has_board"] = $has_board;
+		
 		/*foreach ($data["LC"] as $key => $value) {
 			$data["LC"][$key]->current_board =
 				 $this->LC_Model->get_board_at_date($data["LC"]["lc_id"], date("Y-M-D"));

@@ -22,6 +22,8 @@ foreach ($LC as $row)
 {
 	echo $row->lc_internal_name . ": <br>";
 
+	if($has_board[$row->lc_id] == 0)
+		continue;
 	echo "<table border='1'>";
 
 	$board = $current_boards[$row->lc_id];
