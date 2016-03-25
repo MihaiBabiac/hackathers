@@ -13,16 +13,47 @@ $description = array
  'lc_email' => "Internal name",
  'lc_site' => "Internal name",
  );
-/*foreach ($LC as $row)
-{
-//print_r($row);
-	echo $row->lc_id;
-echo "<br>";
-}*/
+
+
 $i = 0;
 
+foreach ($LC as $row)
+{
+	echo $row->lc_internal_name . ": <br>";
 
+	echo "<table border='1'>";
 
+	$board = $current_boards[$row->lc_id];
+
+	$j = 0;
+
+	foreach($board as $member)
+	{
+		if($j == 0)
+		{
+			echo "<tr>";
+			foreach($member as $key => $value)
+			{
+				echo "<th>" . $key . "</th>";
+			}
+			echo "</tr>";
+		}
+		
+		echo "<tr>";
+		foreach($member as $value)
+		{
+			echo "<td>" . $value . "</td>";
+		}
+		echo "</tr>";
+
+		$j++;
+
+	}
+
+	echo "</table>";
+
+}
+/*
 echo "<table border='1'>";
 foreach ($LC as $row)
 {
@@ -33,6 +64,7 @@ foreach ($LC as $row)
 		{
 			echo "<th>" . $description[$key] . "</th>";
 		}
+		echo "<th>" . "Current board date" . "</th>";
 		echo "</tr>";
 	}
 	
@@ -41,11 +73,14 @@ foreach ($LC as $row)
 	{
 		echo "<td>" . $value . "</td>";
 	}
+	echo "<td>" . $current_board_changes[$row->lc_id]->board_change_date . "</td>";
 	echo "</tr>";
 
 	$i++;
 }
 echo "</table>";
+*/ 
+
 
 /*
 foreach ($LC as $row)
