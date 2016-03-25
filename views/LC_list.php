@@ -13,13 +13,13 @@ $description = array
  'lc_email' => "Internal name",
  'lc_site' => "Internal name",
  );
-foreach ($LC as $row)
+/*foreach ($LC as $row)
 {
 //print_r($row);
 	echo $row->lc_id;
 echo "<br>";
-}
-/*$i = 0;
+}*/
+$i = 0;
 
 
 
@@ -46,7 +46,7 @@ foreach ($LC as $row)
 	$i++;
 }
 echo "</table>";
-*/
+
 /*
 foreach ($LC as $row)
 {
