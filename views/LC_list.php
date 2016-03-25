@@ -5,13 +5,14 @@
 $description = array
 ('lc_id' => "ID",
  'lc_internal_name' => "Internal name",
- 'lc_reg_name' => "Internal name",
- 'lc_connection' => "Internal name",
- 'lc_address' => "Internal name",
- 'lc_post_code' => "Internal name",
- 'lc_city' => "Internal name",
- 'lc_email' => "Internal name",
- 'lc_site' => "Internal name",
+ 'lc_reg_name' => "Registration name",
+ 'lc_connection' => "Connection name",
+ 'lc_address' => "address",
+ 'lc_post_code' => "Post code",
+ 'lc_city' => "City",
+ //country
+ 'lc_email' => "email",
+ 'lc_site' => "website",
  );
 
 
