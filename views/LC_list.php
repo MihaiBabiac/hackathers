@@ -61,8 +61,13 @@ foreach ($LC as $row)
 	echo "</table>";
 
 }
+<<<<<<< HEAD
 echo "<br><br><br>" ;
 echo "<table class='table table-hover'>";
+=======
+echo "<br><br><br>";
+echo "<table border='1'>";
+>>>>>>> origin/master
 foreach ($LC as $row)
 {
 	if($i == 0)
@@ -72,6 +77,7 @@ foreach ($LC as $row)
 		{
 			echo "<th>" . $description[$key] . "</th>";
 		}
+		
 		echo "</tr>";
 	}
 	
