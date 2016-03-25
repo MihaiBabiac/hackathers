@@ -47,10 +47,11 @@ foreach ($LC as $row)
 	{
 		if($key == "lc_id" || $key == "lc_connection")
 					continue;
-		echo "<td role='button' data-toggle='collapse' href='#collapseExample$i' aria-expanded='false' aria-controls='collapseExample'>" . $value . "</td>";
+		echo "<td role='button' data-toggle='collapse' href='#collapseExample$i'>" . $value . "</td>";
 	}
-	echo "<td> <button type='button' class='btn btn-primary btn-xs'>Details</button> <button type='button' class='btn btn-default' aria-label='Left Align'>
-		<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
+	echo "<td> <button type='button' class='btn btn-primary' data-toggle='modal' data-target='.bs-example-modal-lg'>Details</button> 
+		<button type='button' class='btn btn-default'>
+		<span class='glyphicon glyphicon-pencil'></span>
 		</button>  </td>";
 
 	echo "</tr>";
@@ -102,10 +103,20 @@ foreach ($LC as $row)
 echo "</table>";
 
 ?>
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      SomeThing
+		<form action="display_added_info" method="post">
+		Internal name: <input type="text" name="lc_internal_name"><br>
+		Registration name: <input type="text" name="lc_reg_name"><br>
+		Connection name: <input type="text" name="lc_connection"><br>
+		Address: <input type="text" name="lc_address"><br>
+		Post code: <input type="text" name="lc_post_code"><br>
+		City: <input type="text" name="lc_city"><br>
+		E-mail: <input type="text" name="lc_email"><br>
+		Website: <input type="text" name="lc_site"><br>
+		<input type="submit" value="add">
+		</form>
     </div>
   </div>
 </div>
