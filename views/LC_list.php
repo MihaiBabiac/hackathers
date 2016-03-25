@@ -1,5 +1,7 @@
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -78,12 +80,47 @@ foreach ($LC as $row)
 		echo "</tr>";
 	}
 	
-	echo "<tr>";
+	echo "<tr role='button' data-toggle='collapse' href='#collapseExample$i' aria-expanded='false' aria-controls='collapseExample'>";
 	foreach($row as $value)
 	{
 		echo "<td>" . $value . "</td>";
 	}
 	echo "</tr>";
+
+	echo "<tr class='collapse' id='collapseExample$i'><td colspan='9'>";
+	if($has_board[$row->lc_id] == 0)
+		continue;
+	echo "<table class='table table-hover'>";
+
+	$board = $current_boards[$row->lc_id];
+
+	$j = 0;
+
+	foreach($board as $member)
+	{
+		if($j == 0)
+		{
+			echo "<tr>";
+			foreach($member as $key => $value)
+			{
+				echo "<th>" . $key . "</th>";
+			}
+			echo "</tr>";
+		}
+		
+		echo "<tr>";
+		foreach($member as $value)
+		{
+			echo "<td>" . $value . "</td>";
+		}
+		echo "</tr>";
+
+		$j++;
+
+	}
+
+	echo "</table>";
+	echo "<td></tr>";
 
 	$i++;
 }
