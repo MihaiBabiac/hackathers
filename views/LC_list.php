@@ -1,4 +1,9 @@
 <html>
+<head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
 <body>
 <?php
 
@@ -24,7 +29,7 @@ foreach ($LC as $row)
 
 	if($has_board[$row->lc_id] == 0)
 		continue;
-	echo "<table border='1'>";
+	echo "<table class='table table-hover'>";
 
 	$board = $current_boards[$row->lc_id];
 
@@ -57,7 +62,7 @@ foreach ($LC as $row)
 
 }
 echo "<br><br><br>" ;
-echo "<table border='1'>";
+echo "<table class='table table-hover'>";
 foreach ($LC as $row)
 {
 	if($i == 0)
