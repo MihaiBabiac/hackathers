@@ -60,7 +60,6 @@ class Hackathers extends CI_Controller {
 			$current_board_change = $current_board_change->result()[0];
 
 			$current_board_changes[$id] = $current_board_change;
-			//print_r($current_board_change);
 			$current_board = $this->LC_Model->get_board($current_board_change->board_change_id);
 			$current_boards[$id] = $current_board->result();
 		}
@@ -77,6 +76,37 @@ class Hackathers extends CI_Controller {
 		
 
 		$this->load->view('LC_list', $data);
+	}
+
+	public function history($lc_id = -1)
+	{
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('hackathers/hackathers/login', 'refresh');
+		}
+		$LC = $this->LC_Model->get_lc($lc_id);
+
+		if($LC->num_rows() == 0)
+		{
+			show_error('LC not found'); 
+			return;
+		}
+		$LC = $LC->result()[0];
+
+		$board_changes = $this->LC_Model->get_board_changes($lc_id)->result();
+		$boards = array();
+
+		foreach($board_changes as $board_change)
+		{
+			$boards[$board_change->board_change_id] = 
+							$this->LC_Model->get_board($board_change->board_change_id)->result();
+		}
+
+		$data["board_changes"] = $board_changes;
+		$data["boards"] = $boards;
+		$data["LC"] = $LC;
+		$this->load->view('history', $data);
 	}
 
 	// log the user in

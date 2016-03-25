@@ -48,6 +48,21 @@ class LC_Model extends CI_Model { //name of file with capital beginning
     {
         $this->db->insert('position',$_POST); //again not a genius idea !!
     }
+
+    public function get_board_changes($lc_id)
+    {
+    	$query = $this->db->where("lc_id", $lc_id)
+						  ->order_by("board_change_date DESC")
+						  ->get("board_change");
+		return $query; 
+    }
+
+    public function get_lc($lc_id)
+    {
+    	$query = $this->db->where("lc_id", $lc_id)
+						  ->get("lc");
+		return $query;
+    }
     
     
 }
