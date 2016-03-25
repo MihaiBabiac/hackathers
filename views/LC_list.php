@@ -7,6 +7,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
+
+
 <?php
 
 $description = array
@@ -22,49 +24,7 @@ $description = array
  'lc_site' => "website",
  );
 
-
 $i = 0;
-
-foreach ($LC as $row)
-{
-	echo $row->lc_internal_name . ": <br>";
-
-	if($has_board[$row->lc_id] == 0)
-		continue;
-	echo "<table class='table table-hover'>";
-
-	$board = $current_boards[$row->lc_id];
-
-	$j = 0;
-
-	foreach($board as $member)
-	{
-		if($j == 0)
-		{
-			echo "<tr>";
-			foreach($member as $key => $value)
-			{
-				echo "<th>" . $key . "</th>";
-			}
-			echo "</tr>";
-		}
-		
-		echo "<tr>";
-		foreach($member as $value)
-		{
-			echo "<td>" . $value . "</td>";
-		}
-		echo "</tr>";
-
-		$j++;
-
-	}
-
-	echo "</table>";
-
-}
-
-echo "<br><br><br>" ;
 echo "<table class='table table-hover'>";
 
 foreach ($LC as $row)
@@ -74,17 +34,25 @@ foreach ($LC as $row)
 		echo "<tr>";
 		foreach($row as $key => $value)
 		{
+			if($key == "lc_id" || $key == "adasda")
+					continue;
 			echo "<th>" . $description[$key] . "</th>";
 		}
-		
+		echo "<th> </th>";
 		echo "</tr>";
 	}
 	
-	echo "<tr role='button' data-toggle='collapse' href='#collapseExample$i' aria-expanded='false' aria-controls='collapseExample'>";
-	foreach($row as $value)
+	echo "<tr >";
+	foreach($row as $key => $value)
 	{
-		echo "<td>" . $value . "</td>";
+		if($key == "lc_id" || $key == "adasda")
+					continue;
+		echo "<td role='button' data-toggle='collapse' href='#collapseExample$i' aria-expanded='false' aria-controls='collapseExample'>" . $value . "</td>";
 	}
+	echo "<td> <button type='button' class='btn btn-primary btn-xs'>Details</button> <button type='button' class='btn btn-default' aria-label='Left Align'>
+		<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
+		</button>  </td>";
+
 	echo "</tr>";
 
 	echo "<tr class='collapse' id='collapseExample$i'><td colspan='9'>";
@@ -103,14 +71,18 @@ foreach ($LC as $row)
 			echo "<tr>";
 			foreach($member as $key => $value)
 			{
+				if($key == "position_id" || $key == "board_change_id")
+					continue;
 				echo "<th>" . $key . "</th>";
 			}
 			echo "</tr>";
 		}
 		
 		echo "<tr>";
-		foreach($member as $value)
+		foreach($member as $key => $value)
 		{
+			if($key == "position_id" || $key == "board_change_id")
+				continue;
 			echo "<td>" . $value . "</td>";
 		}
 		echo "</tr>";
