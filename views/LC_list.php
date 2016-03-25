@@ -7,20 +7,28 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 <style>
-div.right {
-	float: right;
-}
+	div.right {
+		float: right;
+	}
+	div.inline {
+		display: inline;
+	}
 </style>
 
 
 </head>
 <body>
-
-
-	<h1>List of commitments</h1>
-
+  <div class="inline"> 
+	  <div class="right"> 
+		<button type='button' class='btn btn-default btn-xs'>
+		  <span class='glyphicon glyphicon-off' aria-hidden='true'></span> Log out
+		</button>
+	  </div>	
+	  <h1>List of commitments</h1>
+  </div>
+  <br>
   <div class="right"> 
-	<button type='button' class='btn btn-default btn-lg'>
+	<button type='button' class='btn btn-default btn-sm'>
 	  <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add commitment
 	</button>
   </div>
