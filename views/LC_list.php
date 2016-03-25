@@ -5,8 +5,25 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<style>
+div.right {
+	float: right;
+}
+</style>
+
+
 </head>
 <body>
+
+
+	<h1>List of commitments</h1>
+
+  <div class="right"> 
+	<button type='button' class='btn btn-default btn-lg'>
+	  <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add commitment
+	</button>
+  </div>
 
 
 <?php
@@ -25,6 +42,9 @@ $description = array
  );
 
 $i = 0;
+
+
+
 echo "<table class='table table-hover'>";
 
 foreach ($LC as $row)
@@ -49,10 +69,17 @@ foreach ($LC as $row)
 					continue;
 		echo "<td role='button' data-toggle='collapse' href='#collapseExample$i'>" . $value . "</td>";
 	}
-	echo "<td> <button type='button' class='btn btn-primary' data-toggle='modal' data-target='.bs-example-modal-lg'>Details</button> 
-		<button type='button' class='btn btn-default'>
-		<span class='glyphicon glyphicon-pencil'></span>
-		</button>  </td>";
+
+	echo "<td>
+		<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.bs-example-modal-lg'>
+		<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
+		</button>  
+		<button type='button' class='btn btn-default btn-lg btn-sm'>
+		<span class='glyphicon glyphicon-film'></span>
+		</button>
+
+		</td>";
+
 
 	echo "</tr>";
 
