@@ -74,9 +74,9 @@ foreach ($LC as $row)
 		<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.bs-example-modal-lg'>
 		<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
 		</button>  
-		<button type='button' class='btn btn-default btn-lg btn-sm'>
+		<a href='history/$row->lc_id'><button type='button' class='btn btn-default btn-lg btn-sm'>
 		<span class='glyphicon glyphicon-film'></span>
-		</button>
+		</button></a>
 
 		</td>";
 
