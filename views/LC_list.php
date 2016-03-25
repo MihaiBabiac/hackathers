@@ -34,7 +34,7 @@ foreach ($LC as $row)
 		echo "<tr>";
 		foreach($row as $key => $value)
 		{
-			if($key == "lc_id" || $key == "adasda")
+			if($key == "lc_id" || $key == "lc_connection")
 					continue;
 			echo "<th>" . $description[$key] . "</th>";
 		}
@@ -45,7 +45,7 @@ foreach ($LC as $row)
 	echo "<tr >";
 	foreach($row as $key => $value)
 	{
-		if($key == "lc_id" || $key == "adasda")
+		if($key == "lc_id" || $key == "lc_connection")
 					continue;
 		echo "<td role='button' data-toggle='collapse' href='#collapseExample$i' aria-expanded='false' aria-controls='collapseExample'>" . $value . "</td>";
 	}
@@ -56,8 +56,10 @@ foreach ($LC as $row)
 	echo "</tr>";
 
 	echo "<tr class='collapse' id='collapseExample$i'><td colspan='9'>";
+	echo $row->lc_connection . "<br>";
 	if($has_board[$row->lc_id] == 0)
 		continue;
+	echo "<div class='well'>";
 	echo "<table class='table table-hover'>";
 
 	$board = $current_boards[$row->lc_id];
@@ -92,31 +94,20 @@ foreach ($LC as $row)
 	}
 
 	echo "</table>";
+	echo "</div>";
 	echo "<td></tr>";
 
 	$i++;
 }
 echo "</table>";
 
-
-
-/*
-foreach ($LC as $row)
-{
-	echo "LC Name: " . $row["lc_internal_name"] . "<br>";
-
-	foreach($row["current_board"] as $position)
-	{
-		foreach($position as $key => $value)
-		{
-			echo $key . ": " . $value . "<br>";
-		}
-	}
-	echo "<br>"
-}
-*/
-//print_r($database_stuff->fetch_array(MYSQLI_NUM));
-
 ?>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      SomeThing
+    </div>
+  </div>
+</div>
 </body>
 </html>
