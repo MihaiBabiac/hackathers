@@ -9,7 +9,7 @@ class LC_Model extends CI_Model { //name of file with capital beginning
 	
 	public function get_lcs()
 	{
-		$query = $this->db->get('lc'); //get ALL data from test_table
+		$query = $this->db->order_by("lc_internal_name", "ASC")->get('lc'); //get ALL data from test_table
 		return $query; //return the data
 	}
 
@@ -38,7 +38,7 @@ class LC_Model extends CI_Model { //name of file with capital beginning
 		return $query;
 	}
     
-    public function add_info()
+    public function add_lc()
     {
             $this->db->insert('lc',$_POST); //not a genius idea !!!!!
         

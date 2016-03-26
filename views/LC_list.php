@@ -20,15 +20,15 @@
 <body>
   <div class="inline"> 
 	  <div class="right"> 
-		<button type='button' class='btn btn-default btn-xs'>
-		  <span class='glyphicon glyphicon-off' aria-hidden='true'></span> Log out
-		</button>
+		<a href="logout"><button type='button' class='btn btn-default btn-xs'>
+		  <span class='glyphicon glyphicon-off'></span>Log out
+		</button></a>
 	  </div>	
 	  <h1>List of commitments</h1>
   </div>
   <br>
   <div class="right"> 
-	<button type='button' class='btn btn-default btn-sm'>
+	<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.add-lc-modal'>
 	  <span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Add commitment
 	</button>
   </div>
@@ -57,7 +57,8 @@ echo "<table class='table table-hover'>";
 
 foreach ($LC as $row)
 {
-	if($i == 0)
+	$i++;
+	if($i == 1)
 	{
 		echo "<tr>";
 		foreach($row as $key => $value)
@@ -133,7 +134,7 @@ foreach ($LC as $row)
 	echo "</div>";
 	echo "<td></tr>";
 
-	$i++;
+	
 }
 echo "</table>";
 
@@ -155,5 +156,68 @@ echo "</table>";
     </div>
   </div>
 </div>
+
+
+<div class="modal fade add-lc-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span>&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add Commitment
+                </h4>
+            </div>
+
+            <div class="modal-body">
+				<form role="form" action="add_lc" method="post">
+					<div class="form-group">
+						<label for="lc_internal_name">Internal name:</label>
+						<input type="text" class="form-control" id="lc_internal_name" name="lc_internal_name">
+					</div>
+					<div class="form-group">
+						<label for="lc_reg_name">Registration name:</label>
+						<input type="text" class="form-control" id="lc_reg_name" name="lc_reg_name">
+					</div>
+					<div class="form-group">
+						<label for="lc_connection">Connection name:</label>
+						<input type="text" class="form-control" id="lc_connection" name="lc_connection">
+					</div>
+					<div class="form-group">
+						<label for="lc_address">Address:</label>
+						<input type="text" class="form-control" id="lc_address" name="lc_address">
+					</div>
+					<div class="form-group">
+						<label for="lc_post_code">Post code:</label>
+						<input type="text" class="form-control" id="lc_post_code" name="lc_post_code">
+					</div>
+					<div class="form-group">
+						<label for="lc_city">City:</label>
+						<input type="text" class="form-control" id="lc_city" name="lc_city">
+					</div>
+					<div class="form-group">
+						<label for="lc_email">E-mail:</label>
+						<input type="text" class="form-control" id="lc_email" name="lc_email">
+					</div>
+					<div class="form-group">
+						<label for="lc_site">Website:</label>
+						<input type="text" class="form-control" id="lc_site" name="lc_site">
+					</div>
+					
+
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<input type="submit" class="btn btn-primary" value="Add">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div> 
+
 </body>
 </html>

@@ -109,6 +109,11 @@ class Hackathers extends CI_Controller {
 		$this->load->view('history', $data);
 	}
 
+	public function add_lc()
+	{
+		$this->LC_Model->add_lc();
+	}
+
 	// log the user in
 	public function login()
 	{
