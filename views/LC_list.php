@@ -102,14 +102,22 @@ foreach ($LC as $row)
 	}
 
 	echo "<td>
-		<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.bs-example-modal-lg'>
-		<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
-		</button>  
-		<a href='history/$row->lc_id'><button type='button' class='btn btn-default btn-lg btn-sm'>
-		<span class='glyphicon glyphicon-film'></span>
-		</button></a>
+	<div class='btn-toolbar' role='toolbar'>
+		<div class='btn-group' role='group'>
+			<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.modal-add-lc'>
+			<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
+			</button>
 
-		</td>";
+			<a href='history/$row->lc_id'><button type='button' class='btn btn-default btn-lg btn-sm'>
+			<span class='glyphicon glyphicon-film'></span>
+			</button></a>
+		</div>
+		
+		<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.modal-shred-lc'>
+		<span class='glyphicon glyphicon-fire' aria-hidden='true'></span>
+		</button>
+	</div>
+	</td>";
 
 
 	echo "</tr>";
