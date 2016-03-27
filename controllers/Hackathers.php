@@ -89,7 +89,7 @@ class Hackathers extends CI_Controller {
 
 		if($LC->num_rows() == 0)
 		{
-			show_error('LC not found'); 
+			show_error('LC not found', 404); 
 			return;
 		}
 		$LC = $LC->result()[0];
