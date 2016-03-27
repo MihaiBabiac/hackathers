@@ -171,9 +171,10 @@ echo "</table>";
                     Add Commitment
                 </h4>
             </div>
+			
+			<form role="form" action="add_lc" method="post">
 
             <div class="modal-body">
-				<form role="form" action="add_lc" method="post">
 					<div class="form-group">
 						<label for="lc_internal_name">Internal name:</label>
 						<input type="text" class="form-control" id="lc_internal_name" name="lc_internal_name">
@@ -208,13 +209,14 @@ echo "</table>";
 					</div>
 					
 
-				</form>
 			</div>
 
 			<div class="modal-footer">
 				<input type="submit" class="btn btn-primary" value="Add">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
+							</form>
+
 		</div>
 	</div>
 </div> 
