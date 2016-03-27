@@ -16,6 +16,8 @@
 </style>
 
 <script>
+var lc_to_shred = -1;
+
 function add_lc(){
 	var inputs = document.getElementsByClassName("add-lc");
 
@@ -30,12 +32,19 @@ function add_lc(){
 
 	xhr.open("POST", "add_lc");
 
-	xhr.addEventListener("loadend", function(){console.log(this.responseText)});
+	//xhr.addEventListener("loadend", function(){console.log(this.responseText)});
 	//xhr.addEventListener("load", function(){console.log(this.responseText);});
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	console.log(post_data);
 	xhr.send(post_data);
 }
+
+function shred_lc(){
+	var xhr = new XMLHttpRequest();
+	xhr.open("get", "shred_lc/" + lc_to_shred);
+	xhr.send();
+	lc_to_shred = -1;
+}
+
 </script>
 
 </head>
@@ -113,9 +122,14 @@ foreach ($LC as $row)
 			</button></a>
 		</div>
 		
-		<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.modal-shred-lc'>
+		<button type='button' class='btn btn-default btn-sm' onclick='lc_to_shred=$row->lc_id;' data-toggle='modal' data-target='.shred-lc-modal'>
 		<span class='glyphicon glyphicon-fire' aria-hidden='true'></span>
 		</button>
+		<!--
+		<a href='shred_lc/$row->lc_id'><button type='button' class='btn btn-default btn-lg btn-sm'>
+		<span class='glyphicon glyphicon-fire'></span>
+		</button></a>
+		-->
 	</div>
 	</td>";
 
@@ -243,13 +257,38 @@ echo "</table>";
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" onclick="add_lc()" data-dismiss="modal">Add</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 			</div>
-							</form>
+			</form>
 
 		</div>
 	</div>
-</div> 
+</div>
 
+<div class="modal fade shred-lc-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			    <h4 class="modal-title">
+				Shred LC?
+				</h4>
+			</div>
+
+            <div class="modal-body">
+            	Are you sure you really sure this is what you want to do?
+            	<br>
+            	Shredding means permanently deleting all data about this LC from the database.
+            	There is no way to recover this information later.
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" onclick="shred_lc()" data-dismiss="modal">Shred</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			</div>
+
+		</div>
+	</div>
+</div>
 </body>
 </html>

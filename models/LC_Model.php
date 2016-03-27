@@ -63,6 +63,18 @@ class LC_Model extends CI_Model { //name of file with capital beginning
 						  ->get("lc");
 		return $query;
     }
+
+    public function shred_lc($lc_id)
+    {
+    	$board_changes = $this->get_board_changes($lc_id)->result();
+
+    	foreach ($board_changes as $board_change) {
+    		$this->db->where("board_change_id", $board_change->board_change_id)->delete("position");
+    	}
+
+    	$this->db->where("lc_id", $lc_id)->delete("board_change");
+    	$this->db->where("lc_id", $lc_id)->delete("lc");
+    }
     
     
 }

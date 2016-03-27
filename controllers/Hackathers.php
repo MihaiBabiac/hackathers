@@ -114,6 +114,19 @@ class Hackathers extends CI_Controller {
 		$this->LC_Model->add_lc();
 	}
 
+	public function shred_lc($lc_id = -1)
+	{
+		$LC = $this->LC_Model->get_lc($lc_id);
+
+		if($LC->num_rows() == 0)
+		{
+			show_error('LC not found', 404); 
+			return;
+		}
+
+		$this->LC_Model->shred_lc($lc_id);
+	}
+
 	// log the user in
 	public function login()
 	{
