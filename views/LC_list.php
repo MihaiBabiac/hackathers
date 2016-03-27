@@ -15,6 +15,28 @@
 	}
 </style>
 
+<script>
+function add_lc(){
+	var inputs = document.getElementsByClassName("add-lc");
+
+	var post_data = "";
+
+	for(var i = 0; i < inputs.length; i++)
+	{
+		post_data += inputs[i].name + "=" + inputs[i].value + (i != inputs.length - 1? "&" : "");
+	}
+
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("POST", "add_lc");
+
+	xhr.addEventListener("loadend", function(){console.log(this.responseText)});
+	//xhr.addEventListener("load", function(){console.log(this.responseText);});
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	console.log(post_data);
+	xhr.send(post_data);
+}
+</script>
 
 </head>
 <body>
@@ -139,7 +161,7 @@ foreach ($LC as $row)
 echo "</table>";
 
 ?>
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+<div class="modal fade modal-add-lc" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
 		<form action="display_added_info" method="post">
@@ -177,42 +199,42 @@ echo "</table>";
             <div class="modal-body">
 					<div class="form-group">
 						<label for="lc_internal_name">Internal name:</label>
-						<input type="text" class="form-control" id="lc_internal_name" name="lc_internal_name">
+						<input type="text" class="form-control add-lc" id="lc_internal_name" name="lc_internal_name">
 					</div>
 					<div class="form-group">
 						<label for="lc_reg_name">Registration name:</label>
-						<input type="text" class="form-control" id="lc_reg_name" name="lc_reg_name">
+						<input type="text" class="form-control add-lc" id="lc_reg_name" name="lc_reg_name">
 					</div>
 					<div class="form-group">
 						<label for="lc_connection">Connection name:</label>
-						<input type="text" class="form-control" id="lc_connection" name="lc_connection">
+						<input type="text" class="form-control add-lc" id="lc_connection" name="lc_connection">
 					</div>
 					<div class="form-group">
 						<label for="lc_address">Address:</label>
-						<input type="text" class="form-control" id="lc_address" name="lc_address">
+						<input type="text" class="form-control add-lc" id="lc_address" name="lc_address">
 					</div>
 					<div class="form-group">
 						<label for="lc_post_code">Post code:</label>
-						<input type="text" class="form-control" id="lc_post_code" name="lc_post_code">
+						<input type="text" class="form-control add-lc" id="lc_post_code" name="lc_post_code">
 					</div>
 					<div class="form-group">
 						<label for="lc_city">City:</label>
-						<input type="text" class="form-control" id="lc_city" name="lc_city">
+						<input type="text" class="form-control add-lc" id="lc_city" name="lc_city">
 					</div>
 					<div class="form-group">
 						<label for="lc_email">E-mail:</label>
-						<input type="text" class="form-control" id="lc_email" name="lc_email">
+						<input type="text" class="form-control add-lc" id="lc_email" name="lc_email">
 					</div>
 					<div class="form-group">
 						<label for="lc_site">Website:</label>
-						<input type="text" class="form-control" id="lc_site" name="lc_site">
+						<input type="text" class="form-control add-lc" id="lc_site" name="lc_site">
 					</div>
 					
 
 			</div>
 
 			<div class="modal-footer">
-				<input type="submit" class="btn btn-primary" value="Add">
+				<button type="button" class="btn btn-primary" onclick="add_lc()" data-dismiss="modal">Add</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 							</form>
