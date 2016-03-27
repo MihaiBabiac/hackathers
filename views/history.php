@@ -15,12 +15,12 @@
 		$data["boards"] = $boards;
 		$data["LC"] = $LC;
 		*/
-foreach($board_changes as $key => $value)
+foreach($board_changes as $board_change)
 {
 ?>
 <div class="panel panel-default">
 	<!-- Default panel contents -->
-	<div class="panel-heading">Board Change on <?=$value->board_change_date;?></div>
+	<div class="panel-heading">Board Change on <?=$board_change->board_change_date;?></div>
 	<!--<div class="panel-body">
 	<p>...</p>
 	</div>-->
@@ -28,9 +28,9 @@ foreach($board_changes as $key => $value)
 	<!-- Table -->
 	<table class="table">
 	<?php
-	if(array_key_exists($key, $boards))
+	if(array_key_exists($board_change->board_change_id, $boards))
 	{
-		foreach($boards[$key] as $position)
+		foreach($boards[$board_change->board_change_id] as $position)
 		{
 			echo "<tr>";
 
