@@ -127,6 +127,32 @@ class Hackathers extends CI_Controller {
 		$this->LC_Model->shred_lc($lc_id);
 	}
 
+	public function lcs_json()
+	{
+		$lcs = $this->LC_Model->get_lcs()->result();
+		
+		$this->output
+		        ->set_status_header(200)
+		        ->set_content_type('application/json', 'utf-8')
+		        ->set_output(json_encode($lcs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+		        ->_display();
+		exit;
+	}
+
+	public function current_board_change_json($lc_id)
+	{
+		$current_board_change = $this->LC_Model->get_current_board_change_json($lc_id);
+
+		$this->output
+		        ->set_status_header(200)
+		        ->set_content_type('application/json', 'utf-8')
+		        ->set_output($current_board_change)
+		        ->_display();
+		exit;
+	}
+
+
+
 	// log the user in
 	public function login()
 	{
