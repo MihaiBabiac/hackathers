@@ -13,6 +13,28 @@
 	div.inline {
 		display: inline;
 	}
+
+
+
+	table.lc-list-table > tbody > tr:nth-child(1) {
+		background: #5b9bd5;
+    	color: black;
+	}
+
+	table.lc-list-table > tbody > tr:nth-child(2n+2) {
+		background: #DDEBF7;
+    	color: black;
+	}
+
+	table.lc-list-table > tbody > tr:nth-child(2n+2):hover {
+		background: #c1daf0;
+	}
+
+	table.lc-list-table > tbody > tr:nth-child(2n+3) {
+		background: #f5faff;
+    	color: black;
+	}
+
 </style>
 
 <script>
