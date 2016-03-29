@@ -55,7 +55,7 @@ function add_lc(){
 	xhr.open("POST", "add_lc");
 
 	//xhr.addEventListener("loadend", function(){console.log(this.responseText)});
-	//xhr.addEventListener("load", function(){console.log(this.responseText);});
+	xhr.addEventListener("load", function(){update_table();});
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send(post_data);
 }
@@ -63,14 +63,187 @@ function add_lc(){
 function shred_lc(){
 	var xhr = new XMLHttpRequest();
 	xhr.open("get", "shred_lc/" + lc_to_shred);
+	xhr.addEventListener("load", function(){update_table();});
 	xhr.send();
 	lc_to_shred = -1;
 }
 
+function get_lc_list(async)
+{
+	if(async === undefined)
+		async = true;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("get", "lcs_json", async);
+	xhr.send();
+
+	if (xhr.status === 200)
+	{
+		return JSON.parse(xhr.responseText);
+	}
+	else
+	{
+		return undefined;
+	}
+}
+
+function get_current_board_change(lc_id, async)
+{
+	if(async === undefined)
+		async = true;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("get", "current_board_change_json/" + lc_id, async);
+	xhr.send();
+
+	if (xhr.status === 200)
+	{
+		return JSON.parse(xhr.responseText);
+	}
+	else
+	{
+		return undefined;
+	}
+}
+
+
+
+function update_table()
+{
+	var table = document.getElementById("lc_list_table");
+
+	var lc_list = get_lc_list(false);
+
+	var html = "<tr>" +
+				"<th>Internal name</th>" +
+				"<th>Registration name</th>" +
+				"<th>City</th>" +
+				"<th>Address</th>" +
+				"<th>Post code</th>" +
+				"<th>Email</th>" +
+				"<th>Website</th>" +
+				"<th></th>" +
+				"</tr>";
+
+	for(var i = 0; i < lc_list.length; i++)
+	{
+		var id = lc_list[i].lc_id;
+
+		html += "<tr>";
+
+
+		html += "<td role='button' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+				+ lc_list[i].lc_internal_name + "</td>";
+		html += "<td role='button' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+				+ lc_list[i].lc_reg_name + "</td>";
+		html += "<td role='button' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+				+ lc_list[i].lc_city + "</td>";
+		html += "<td role='button' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+				+ lc_list[i].lc_address + "</td>";
+		html += "<td role='button' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+				+ lc_list[i].lc_post_code + "</td>";
+		html += "<td role='button' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+				+ lc_list[i].lc_email + "</td>";
+		html += "<td role='button' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+				+ lc_list[i].lc_site + "</td>";
+
+
+		// Buttons
+
+		html += "<td>";
+		html += "<div class='btn-toolbar' role='toolbar'>";
+		html += "<div class='btn-group' role='group'>";
+		html += "<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.modal-add-lc'>";
+		html += "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>";
+		html += "</button>";
+
+		html += "<a href='history/" + id + "'><button type='button' class='btn btn-default btn-lg btn-sm'>";
+		html += "<span class='glyphicon glyphicon-film'></span>";
+		html += "</button></a>";
+		html += "</div>";
+
+		html += "<button type='button' class='btn btn-default btn-sm' onclick='lc_to_shred=" +  id + ";' data-toggle='modal' data-target='.shred-lc-modal'>";
+		html += "<span class='glyphicon glyphicon-fire' aria-hidden='true'></span>";
+		html += "</button>";
+		html += "</div>";
+		html += "</td>";
+
+		// buttons end
+
+
+		html += "</tr>";
+
+		html += "<tr class='collapse' id='collapseExample" + id + "'><td colspan='9'>";
+		html += lc_list[i].lc_connection + "<br>";
+
+		html += "<div class='panel panel-default'>";
+		html += "<div class='panel-heading' id='current_board_date" + id + "'>" + "</div>";
+
+		html += "<table class='table table-hover current-board-table' id='current_board" + id + "'>";
+		html += "</table>";
+		html += "</div>";
+		html += "</td>";
+
+		html += "</tr>";
+	}
+	table.innerHTML = html;
+
+	for(var i = 0; i < lc_list.length; i++)
+	{
+		var id = lc_list[i].lc_id;
+		update_current_board(id);
+	}
+}
+
+
+function update_current_board(lc_id)
+{
+	var data = get_current_board_change(lc_id, false);
+
+	header = document.getElementById("current_board_date" + lc_id);
+	table = document.getElementById("current_board" + lc_id);
+	if(data.board_change)
+	{
+		header.innerHTML = "Current board (since " + data.board_change.board_change_date + ")";
+
+		if(data.board)
+		{
+			var html =  "<tr>" +
+						"<th>Position</th>" +
+						"<th>Name</th>" +
+						"<th>E-mail</th>" +
+						"<th>Phone</th>" +
+						"</tr>";
+
+			for(var i = 0; i < data.board.length; i++)
+			{
+				html += "<tr>";
+				
+				html += "<td>" + data.board[i].position_title + "</td>";
+				html += "<td>" + data.board[i].position_name + "</td>";
+				html += "<td>" + data.board[i].position_mail + "</td>";
+				html += "<td>" + data.board[i].position_phone + "</td>";
+
+				html += "</tr>";
+			}
+
+			table.innerHTML = html;
+		}
+		else
+		{
+			table.innerHTML = "";
+		}
+	}
+	else
+	{
+		header.innerHTML = "";
+		table.innerHTML = "";
+	}
+}
 </script>
 
 </head>
-<body>
+<body onload="update_table();">
   <div class="inline"> 
 	  <div class="right"> 
 		<a href="logout"><button type='button' class='btn btn-default btn-xs'>
@@ -87,124 +260,10 @@ function shred_lc(){
   </div>
 
 
-<?php
+<table class='table table-striped lc-list-table' id='lc_list_table'>
+</table>
+<br><br><br>
 
-$description = array
-('lc_id' => "ID",
- 'lc_internal_name' => "Internal name",
- 'lc_reg_name' => "Registration name",
- 'lc_connection' => "Connection name",
- 'lc_address' => "address",
- 'lc_post_code' => "Post code",
- 'lc_city' => "City",
- //country
- 'lc_email' => "email",
- 'lc_site' => "website",
- );
-
-$i = 0;
-
-
-
-echo "<table class='table table-hover'>";
-
-foreach ($LC as $row)
-{
-	$i++;
-	if($i == 1)
-	{
-		echo "<tr>";
-		foreach($row as $key => $value)
-		{
-			if($key == "lc_id" || $key == "lc_connection")
-					continue;
-			echo "<th>" . $description[$key] . "</th>";
-		}
-		echo "<th> </th>";
-		echo "</tr>";
-	}
-	
-	echo "<tr >";
-	foreach($row as $key => $value)
-	{
-		if($key == "lc_id" || $key == "lc_connection")
-					continue;
-		echo "<td role='button' data-toggle='collapse' href='#collapseExample$i'>" . $value . "</td>";
-	}
-
-	echo "<td>
-	<div class='btn-toolbar' role='toolbar'>
-		<div class='btn-group' role='group'>
-			<button type='button' class='btn btn-default btn-sm' data-toggle='modal' data-target='.modal-add-lc'>
-			<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
-			</button>
-
-			<a href='history/$row->lc_id'><button type='button' class='btn btn-default btn-lg btn-sm'>
-			<span class='glyphicon glyphicon-film'></span>
-			</button></a>
-		</div>
-		
-		<button type='button' class='btn btn-default btn-sm' onclick='lc_to_shred=$row->lc_id;' data-toggle='modal' data-target='.shred-lc-modal'>
-		<span class='glyphicon glyphicon-fire' aria-hidden='true'></span>
-		</button>
-		<!--
-		<a href='shred_lc/$row->lc_id'><button type='button' class='btn btn-default btn-lg btn-sm'>
-		<span class='glyphicon glyphicon-fire'></span>
-		</button></a>
-		-->
-	</div>
-	</td>";
-
-
-	echo "</tr>";
-
-	echo "<tr class='collapse' id='collapseExample$i'><td colspan='9'>";
-	echo $row->lc_connection . "<br>";
-	if($has_board[$row->lc_id] == 0)
-		continue;
-	echo "<div class='well'>";
-	echo "<table class='table table-hover'>";
-
-	$board = $current_boards[$row->lc_id];
-
-	$j = 0;
-
-	foreach($board as $member)
-	{
-		if($j == 0)
-		{
-			echo "<tr>";
-			foreach($member as $key => $value)
-			{
-				if($key == "position_id" || $key == "board_change_id")
-					continue;
-				echo "<th>" . $key . "</th>";
-			}
-			echo "</tr>";
-		}
-		
-		echo "<tr>";
-		foreach($member as $key => $value)
-		{
-			if($key == "position_id" || $key == "board_change_id")
-				continue;
-			echo "<td>" . $value . "</td>";
-		}
-		echo "</tr>";
-
-		$j++;
-
-	}
-
-	echo "</table>";
-	echo "</div>";
-	echo "<td></tr>";
-
-	
-}
-echo "</table>";
-
-?>
 <div class="modal fade modal-add-lc" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
