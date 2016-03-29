@@ -275,10 +275,10 @@ echo "</table>";
 			</div>
 
             <div class="modal-body">
-            	Are you sure you really sure this is what you want to do?
-            	<br>
             	Shredding means permanently deleting all data about this LC from the database.
             	There is no way to recover this information later.
+            	<br>
+            	Are you really sure this is what you want to do?
 			</div>
 
 
