@@ -68,13 +68,13 @@ class LC_Model extends CI_Model { //name of file with capital beginning
 	{
 		$current_board_change = array();
 
-		$temp = $this->LC_Model->get_board_change_at_date($lc_id, date("y-m-d"));
+		$temp = $this->get_board_change_at_date($lc_id, date("y-m-d"));
 
 		if($temp->num_rows() != 0)
 		{
-			$current_board_change = $temp->result()[0];
+			$current_board_change["board_change"] = $temp->result()[0];
 		
-			$current_board_change["board"] = $this->LC_Model->get_board($current_board_change->board_change_id)->result();
+			$current_board_change["board"] = $this->get_board($current_board_change["board_change"]->board_change_id)->result();
 		}
 
 		return json_encode($current_board_change, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
