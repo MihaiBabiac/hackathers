@@ -9,7 +9,25 @@
 </head>
 <body>
 
-<h1><?=$LC->lc_internal_name;?></h1><br>
+<nav class="navbar navbar-static-top navbar-inverse">
+	<div class="container-fluid">
+
+		<ul class="nav navbar-nav navbar-right">
+		<li>
+			<a href="logout">
+				Log out
+			</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+<div class="container-fluid">
+
+<div class="row"> 
+	<div class="col-sm-12">
+		  <h1 class="page-header"><?=$LC->lc_internal_name;?></h1>
+	</div>
+</div>
 
 <?php 
 /*$data["board_changes"] = $board_changes;
@@ -50,5 +68,6 @@ foreach($board_changes as $board_change)
 <?php
 }
 ?>
-
-
+</div>
+</body>
+</html>
