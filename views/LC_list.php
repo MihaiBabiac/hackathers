@@ -34,9 +34,7 @@
 </style>
 
 <script>
-var lc_to_shred = -1;
-var lc_to_edit = -1;
-var lc_for_new_bc = -1;
+var reference_id = -1;
 
 function add_bc(){
 	var date_str = document.getElementById("ab_board_change_date").value;
@@ -44,7 +42,7 @@ function add_bc(){
 	var post_data = "";
 
 	post_data += "board_change_date=" + date_str + "&";
-	post_data += "lc_id=" + lc_for_new_bc;
+	post_data += "lc_id=" + reference_id;
 
 	var xhr = new XMLHttpRequest();
 
@@ -55,7 +53,30 @@ function add_bc(){
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send(post_data);
 
-	lc_for_new_bc = -1;
+	reference_id = -1;
+}
+
+function add_pos(){
+	var inputs = document.getElementsByClassName("add-pos");
+
+	var post_data = "";
+
+	for(var i = 0; i < inputs.length; i++)
+	{
+		post_data += inputs[i].name + "=" + inputs[i].value + "&";
+	}
+	post_data += "board_change_id=" + reference_id;
+
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("POST", "add_pos");
+
+	//xhr.addEventListener("loadend", function(){console.log(this.responseText)});
+	xhr.addEventListener("load", function(){update_table();});
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send(post_data);
+
+	reference_id = -1;
 }
 
 function add_lc(){
@@ -98,7 +119,7 @@ function edit_lc_begin(id)
 		document.getElementById("el_" + keys[i]).value = current_value;
 	}
 
-	lc_to_edit = id;
+	reference_id = id;
 }
 
 function edit_lc(){
@@ -111,7 +132,7 @@ function edit_lc(){
 		post_data += inputs[i].name + "=" + inputs[i].value + "&";
 	}
 
-	post_data += "lc_id=" + lc_to_edit;
+	post_data += "lc_id=" + reference_id;
 
 	var xhr = new XMLHttpRequest();
 
@@ -122,15 +143,15 @@ function edit_lc(){
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send(post_data);
 
-	lc_to_edit = -1;
+	reference_id = -1;
 }
 
 function shred_lc(){
 	var xhr = new XMLHttpRequest();
-	xhr.open("get", "shred_lc/" + lc_to_shred);
+	xhr.open("get", "shred_lc/" + reference_id);
 	xhr.addEventListener("load", function(){update_table();});
 	xhr.send();
-	lc_to_shred = -1;
+	reference_id = -1;
 }
 
 function get_lc_list(async)
@@ -227,7 +248,7 @@ function update_table()
 		html += "</button></a>";
 		html += "</div>";
 
-		html += "<button type='button' class='btn btn-default btn-sm' onclick='lc_to_shred=" +  id + ";' data-toggle='modal' data-target='.shred-lc-modal'>";
+		html += "<button type='button' class='btn btn-default btn-sm' onclick='reference_id=" +  id + ";' data-toggle='modal' data-target='.shred-lc-modal'>";
 		html += "<span class='glyphicon glyphicon-fire' aria-hidden='true'></span>";
 		html += "</button>";
 		html += "</div>";
@@ -242,7 +263,7 @@ function update_table()
 		html += "<div id='display_" + id + "_lc_connection'>" +lc_list[i].lc_connection + "</div><br>";
 
 		html += "<div class='row'>";
-		html += "<button type='button' class='btn btn-default btn-sm col-sm-offset-11' onclick='lc_for_new_bc=" +  id + ";' data-toggle='modal' data-target='.add-bc-modal'>";
+		html += "<button type='button' class='btn btn-default btn-sm col-sm-offset-11' onclick='reference_id=" +  id + ";' data-toggle='modal' data-target='.add-bc-modal'>";
 		html += "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Board change";
 		html += "</button>";
 		html += "</div><br>";
@@ -275,9 +296,14 @@ function update_current_board(lc_id)
 	table = document.getElementById("current_board" + lc_id);
 	if(data.board_change)
 	{
-		header.innerHTML = "Current board (since " + data.board_change.board_change_date + ")";
+		var html = "";
+		html += "<div class='container-fluid'><div class='row'><div class='col-sm-3'>Current board (since " + data.board_change.board_change_date + ")</div>";
+		html += "<button type='button' class='btn btn-default btn-xs col-sm-1 col-sm-offset-8' onclick='reference_id=" +  data.board_change.board_change_id + ";' data-toggle='modal' data-target='.add-pos-modal'>";
+		html += "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Position";
+		html += "</button></div></div>";
+		header.innerHTML = html;//"Current board (since " + data.board_change.board_change_date + ")";
 
-		if(data.board)
+		if(data.board.length)
 		{
 			var html =  "<tr>" +
 						"<th>Position</th>" +
@@ -364,7 +390,7 @@ function update_current_board(lc_id)
                        <span class="sr-only">Close</span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    Add Commitment
+                    Add LC
                 </h4>
             </div>
 			
@@ -409,6 +435,52 @@ function update_current_board(lc_id)
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" onclick="add_lc()" data-dismiss="modal">Add</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade add-pos-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span>&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add position
+                </h4>
+            </div>
+			
+			<form role="form" action="add_pos" method="post">
+
+            <div class="modal-body">
+					<div class="form-group">
+						<label for="ap_position_title">Title:</label>
+						<input type="text" class="form-control add-pos" id="ap_position_title" name="position_title">
+					</div>
+					<div class="form-group">
+						<label for="ap_position_name">Name:</label>
+						<input type="text" class="form-control add-pos" id="ap_position_name" name="position_name">
+					</div>
+					<div class="form-group">
+						<label for="ap_position_mail">E-Mail address:</label>
+						<input type="text" class="form-control add-pos" id="ap_position_mail" name="position_mail">
+					</div>
+					<div class="form-group">
+						<label for="ap_position_phone">Phone:</label>
+						<input type="text" class="form-control add-pos" id="ap_position_phone" name="position_phone">
+					</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="add_pos()" data-dismiss="modal">Add</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 			</div>
 			</form>
@@ -519,7 +591,7 @@ function update_current_board(lc_id)
             <div class="modal-body">
 					<div class="form-group">
 						<label for="ab_board_change_date">Board change date (YYYY-MM-DD):</label>
-						<input type="text" class="form-control edit-lc" id="ab_board_change_date" name="board_change_date">
+						<input type="text" class="form-control add-bc" id="ab_board_change_date" name="board_change_date">
 					</div>
 			</div>
 

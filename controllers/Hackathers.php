@@ -127,6 +127,23 @@ class Hackathers extends CI_Controller {
 		$this->LC_Model->add_lc();
 	}
 
+	public function add_pos()
+	{
+		$keys = ["position_title",
+				 "position_name",
+				 "position_mail",
+				 "position_phone",
+				 "board_change_id"];
+		
+		$data = array();
+		foreach($keys as $key)
+		{
+			$data[$key] = $_POST[$key];
+		}
+
+		$this->LC_Model->add_pos($data);
+	}
+
 	public function edit_lc()
 	{
 		$keys = ["lc_internal_name",
