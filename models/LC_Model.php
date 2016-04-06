@@ -38,6 +38,14 @@ class LC_Model extends CI_Model { //name of file with capital beginning
 		return $query;
 	}
     
+	public function add_bc($lc_id, $date)
+	{
+		$data = array();
+		$data["lc_id"] = $lc_id;
+		$data["board_change_date"] = $date;
+		$this->db->insert('board_change', $data);
+	}
+
     public function add_lc()
     {
         $this->db->insert('lc',$_POST); //not a genius idea !!!!!

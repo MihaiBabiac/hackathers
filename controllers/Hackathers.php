@@ -108,7 +108,20 @@ class Hackathers extends CI_Controller {
 		$data["LC"] = $LC;
 		$this->load->view('history', $data);
 	}
+	public function add_bc()
+	{
+		$date_raw = date_parse_from_format("Y-m-d", $_POST["board_change_date"]);
+		$is_date = checkdate($date_raw["month"], $date_raw["day"], $date_raw["year"]);
 
+		if($is_date && $date_raw["error_count"] == 0)
+		{
+			$this->LC_Model->add_bc($_POST["lc_id"], $_POST["board_change_date"]);
+		}
+		else
+		{
+			show_error('Bad date', 400); 
+		}
+	}
 	public function add_lc()
 	{
 		$this->LC_Model->add_lc();

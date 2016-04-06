@@ -36,6 +36,27 @@
 <script>
 var lc_to_shred = -1;
 var lc_to_edit = -1;
+var lc_for_new_bc = -1;
+
+function add_bc(){
+	var date_str = document.getElementById("ab_board_change_date").value;
+
+	var post_data = "";
+
+	post_data += "board_change_date=" + date_str + "&";
+	post_data += "lc_id=" + lc_for_new_bc;
+
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("POST", "add_bc");
+
+	//xhr.addEventListener("loadend", function(){console.log(this.responseText)});
+	xhr.addEventListener("load", function(){update_table();});
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send(post_data);
+
+	lc_for_new_bc = -1;
+}
 
 function add_lc(){
 	var inputs = document.getElementsByClassName("add-lc");
@@ -221,7 +242,7 @@ function update_table()
 		html += "<div id='display_" + id + "_lc_connection'>" +lc_list[i].lc_connection + "</div><br>";
 
 		html += "<div class='row'>";
-		html += "<button type='button' class='btn btn-default btn-sm col-sm-offset-11' data-toggle='modal' data-target='.add-bc-modal'>";
+		html += "<button type='button' class='btn btn-default btn-sm col-sm-offset-11' onclick='lc_for_new_bc=" +  id + ";' data-toggle='modal' data-target='.add-bc-modal'>";
 		html += "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Board change";
 		html += "</button>";
 		html += "</div><br>";
@@ -465,7 +486,7 @@ function update_current_board(lc_id)
 		<div class="modal-content">
 			<div class="modal-header">
 			    <h4 class="modal-title">
-				Shred LC?
+					Shred LC?
 				</h4>
 			</div>
 
@@ -479,6 +500,32 @@ function update_current_board(lc_id)
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" onclick="shred_lc()" data-dismiss="modal">Shred</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade add-bc-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			    <h4 class="modal-title">
+			    	Add board change
+				</h4>
+			</div>
+
+            <div class="modal-body">
+					<div class="form-group">
+						<label for="ab_board_change_date">Board change date (YYYY-MM-DD):</label>
+						<input type="text" class="form-control edit-lc" id="ab_board_change_date" name="board_change_date">
+					</div>
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="add_bc()" data-dismiss="modal">Add</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 			</div>
 
