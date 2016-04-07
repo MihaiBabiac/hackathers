@@ -92,11 +92,36 @@ class LC_Model extends CI_Model { //name of file with capital beginning
 		{
 			$current_board_change["board_change"] = $temp->result()[0];
 		
-			$current_board_change["board"] = $this->get_board($current_board_change["board_change"]->board_change_id)->result();
+			$current_board_change["positions"] = $this->get_board($current_board_change["board_change"]->board_change_id)->result();
 		}
 
 		return json_encode($current_board_change, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 	}
+
+	/*
+	get_board_at_date 
+	parameter lc_id
+	parameter date - date in YYYY-MM-DD format
+
+	returns: an associative array with two members, board_change and positions. board_change contains the current board change from the db.
+	positions contains the positions in that board_change
+	*/
+    public function get_board_at_date($lc_id, $date)
+	{
+		$board = array();
+
+		$temp = $this->get_board_change_at_date($lc_id, $date);
+
+		if($temp->num_rows() != 0)
+		{
+			$board["board_change"] = $temp->result()[0];
+		
+			$board["positions"] = $this->get_board($board["board_change"]->board_change_id)->result();
+		}
+
+		return $board;
+	}
+
 
     public function shred_lc($lc_id)
     {

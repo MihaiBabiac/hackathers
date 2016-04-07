@@ -191,14 +191,19 @@ class Hackathers extends CI_Controller {
 		exit;
 	}
 
-	public function current_board_change_json($lc_id)
+	public function board_change_json($lc_id)
 	{
-		$current_board_change = $this->LC_Model->get_current_board_change_json($lc_id);
+		if(array_key_exists("date", $_POST))
+			$date = $_POST["date"];
+		else
+			$date = date("y-m-d");
+
+		$board = $this->LC_Model->get_board_at_date($lc_id, $date);
 
 		$this->output
 		        ->set_status_header(200)
 		        ->set_content_type('application/json', 'utf-8')
-		        ->set_output($current_board_change)
+		        ->set_output(json_encode($board, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
 		        ->_display();
 		exit;
 	}

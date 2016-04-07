@@ -182,7 +182,7 @@ function get_current_board_change(lc_id, async)
 		async = true;
 
 	var xhr = new XMLHttpRequest();
-	xhr.open("get", "current_board_change_json/" + lc_id, async);
+	xhr.open("post", "board_change_json/" + lc_id, async);
 	xhr.send();
 
 	if (xhr.status === 200)
@@ -306,7 +306,7 @@ function update_current_board(lc_id)
 		html += "</button></div></div>";
 		header.innerHTML = html;//"Current board (since " + data.board_change.board_change_date + ")";
 
-		if(data.board.length)
+		if(data.positions.length)
 		{
 			var html =  "<tr>" +
 						"<th>Position</th>" +
@@ -315,14 +315,14 @@ function update_current_board(lc_id)
 						"<th>Phone</th>" +
 						"</tr>";
 
-			for(var i = 0; i < data.board.length; i++)
+			for(var i = 0; i < data.positions.length; i++)
 			{
 				html += "<tr>";
 				
-				html += "<td>" + data.board[i].position_title + "</td>";
-				html += "<td>" + data.board[i].position_name + "</td>";
-				html += "<td>" + data.board[i].position_mail + "</td>";
-				html += "<td>" + data.board[i].position_phone + "</td>";
+				html += "<td>" + data.positions[i].position_title + "</td>";
+				html += "<td>" + data.positions[i].position_name + "</td>";
+				html += "<td>" + data.positions[i].position_mail + "</td>";
+				html += "<td>" + data.positions[i].position_phone + "</td>";
 
 				html += "</tr>";
 			}
