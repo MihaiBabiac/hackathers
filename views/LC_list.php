@@ -1,11 +1,14 @@
 <html>
 <head>
 
-<link href="<?php echo base_url("assets/css/bootstrap.min.css"); ?>" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap-datetimepicker.min.css'); ?>" rel="stylesheet">
 
-<script src="<?php echo base_url("assets/js/jquery.min.js"); ?>"></script>
-<script src="<?php echo base_url("assets/js/bootstrap.min.js"); ?>"></script>
 
+<script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/moment-with-locales.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/bootstrap-datetimepicker.js'); ?>"></script>
 <style>
 
 	table.lc-list-table > tbody > tr:nth-child(1) {
@@ -367,11 +370,36 @@ function update_current_board(lc_id)
   
 
 <div class="row"> 
-	<button type='button' class='btn btn-default btn-sm col-sm-offset-11' data-toggle='modal' data-target='.add-lc-modal'>
+    <div class="col-sm-2" style="height:130px;">
+        <div class="form-group">
+            <div class='input-group date' id='datetimepicker10' onchange="console.log('bla');">
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar">
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker10').datetimepicker({
+                viewMode: 'months',
+                format: 'YYYY-MM-DD',
+                showTodayButton: true,
+            });
+
+            $('#datetimepicker10').on('dp.change', function (ev) {
+			    console.log(ev.date.format("YYYY-MM-DD"));
+			});
+        });
+
+
+    </script>
+	<button type='button' class='btn btn-default btn-sm col-sm-offset-9' data-toggle='modal' data-target='.add-lc-modal'>
 		<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Commitment
 	</button>
 </div>
-  <br>
 
 <div class="row"> 
 <table class='table table-striped lc-list-table' id='lc_list_table'>
