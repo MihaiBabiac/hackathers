@@ -38,6 +38,8 @@
 
 <script>
 var reference_id = -1;
+var current_date = "";
+var temp_date = "";
 
 function add_bc(){
 	var date_str = document.getElementById("ab_board_change_date").value;
@@ -157,42 +159,28 @@ function shred_lc(){
 	reference_id = -1;
 }
 
-function get_lc_list(async)
+function get_lc_list(callback)
 {
-	if(async === undefined)
-		async = true;
-
 	var xhr = new XMLHttpRequest();
-	xhr.open("get", "lcs_json", async);
-	xhr.send();
+	xhr.open("get", "lcs_json");
 
-	if (xhr.status === 200)
-	{
-		return JSON.parse(xhr.responseText);
-	}
-	else
-	{
-		return undefined;
-	}
+	xhr.addEventListener("load", function(){callback(JSON.parse(xhr.responseText));});
+
+	xhr.send();
 }
 
-function get_current_board_change(lc_id, async)
+function get_current_board_change(lc_id, callback)
 {
-	if(async === undefined)
-		async = true;
-
 	var xhr = new XMLHttpRequest();
-	xhr.open("post", "board_change_json/" + lc_id, async);
-	xhr.send();
+	xhr.open("post", "board_change_json/" + lc_id);
 
-	if (xhr.status === 200)
-	{
-		return JSON.parse(xhr.responseText);
-	}
-	else
-	{
-		return undefined;
-	}
+	xhr.addEventListener("load", function(){callback(JSON.parse(xhr.responseText));});
+	var data = "";
+	if(current_date != "")
+		data += "date=" + current_date;
+
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send(data);
 }
 
 
@@ -201,144 +189,148 @@ function update_table()
 {
 	var table = document.getElementById("lc_list_table");
 
-	var lc_list = get_lc_list(false);
-
-	var html = "<tr>" +
-				"<th>Internal name</th>" +
-				"<th>Registration name</th>" +
-				"<th>City</th>" +
-				"<th>Address</th>" +
-				"<th>Post code</th>" +
-				"<th>Email</th>" +
-				"<th>Website</th>" +
-				"<th></th>" +
-				"</tr>";
-
-	for(var i = 0; i < lc_list.length; i++)
+	get_lc_list(function(lc_list)
 	{
-		var id = lc_list[i].lc_id;
 
-		html += "<tr class='lc-id-" + id + "'>";
+		var html = "<tr>" +
+					"<th>Internal name</th>" +
+					"<th>Registration name</th>" +
+					"<th>City</th>" +
+					"<th>Address</th>" +
+					"<th>Post code</th>" +
+					"<th>Email</th>" +
+					"<th>Website</th>" +
+					"<th></th>" +
+					"</tr>";
 
+		for(var i = 0; i < lc_list.length; i++)
+		{
+			var id = lc_list[i].lc_id;
 
-		html += "<td role='button' id='display_" + id + "_lc_internal_name' data-toggle='collapse' href='#collapseExample"+ id + "' >" 
-				+ lc_list[i].lc_internal_name + "</td>";
-		html += "<td role='button' id='display_" + id + "_lc_reg_name' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
-				+ lc_list[i].lc_reg_name + "</td>";
-		html += "<td role='button' id='display_" + id + "_lc_city' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
-				+ lc_list[i].lc_city + "</td>";
-		html += "<td role='button' id='display_" + id + "_lc_address' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
-				+ lc_list[i].lc_address + "</td>";
-		html += "<td role='button' id='display_" + id + "_lc_post_code' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
-				+ lc_list[i].lc_post_code + "</td>";
-		html += "<td role='button' id='display_" + id + "_lc_email' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
-				+ lc_list[i].lc_email + "</td>";
-		html += "<td role='button' id='display_" + id + "_lc_site' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
-				+ lc_list[i].lc_site + "</td>";
+			html += "<tr class='lc-id-" + id + "'>";
 
 
-		// Buttons
-
-		html += "<td>";
-		html += "<div class='btn-toolbar' role='toolbar'>";
-		html += "<div class='btn-group' role='group'>";
-		html += "<button type='button' class='btn btn-default btn-sm' onclick='edit_lc_begin(" +  id + ");' data-toggle='modal' data-target='.edit-lc-modal'>";
-		html += "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>";
-		html += "</button>";
-
-		html += "<a href='history/" + id + "'><button type='button' class='btn btn-default btn-lg btn-sm'>";
-		html += "<span class='glyphicon glyphicon-film'></span>";
-		html += "</button></a>";
-		html += "</div>";
-
-		html += "<button type='button' class='btn btn-default btn-sm' onclick='reference_id=" +  id + ";' data-toggle='modal' data-target='.shred-lc-modal'>";
-		html += "<span class='glyphicon glyphicon-fire' aria-hidden='true'></span>";
-		html += "</button>";
-		html += "</div>";
-		html += "</td>";
-
-		// buttons end
+			html += "<td role='button' id='display_" + id + "_lc_internal_name' data-toggle='collapse' href='#collapseExample"+ id + "' >" 
+					+ lc_list[i].lc_internal_name + "</td>";
+			html += "<td role='button' id='display_" + id + "_lc_reg_name' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+					+ lc_list[i].lc_reg_name + "</td>";
+			html += "<td role='button' id='display_" + id + "_lc_city' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+					+ lc_list[i].lc_city + "</td>";
+			html += "<td role='button' id='display_" + id + "_lc_address' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+					+ lc_list[i].lc_address + "</td>";
+			html += "<td role='button' id='display_" + id + "_lc_post_code' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+					+ lc_list[i].lc_post_code + "</td>";
+			html += "<td role='button' id='display_" + id + "_lc_email' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+					+ lc_list[i].lc_email + "</td>";
+			html += "<td role='button' id='display_" + id + "_lc_site' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+					+ lc_list[i].lc_site + "</td>";
 
 
-		html += "</tr>";
+			// Buttons
 
-		html += "<tr class='collapse' id='collapseExample" + id + "'><td colspan='9'>";
-		html += "<div id='display_" + id + "_lc_connection'>" +lc_list[i].lc_connection + "</div><br>";
+			html += "<td id='toolbar_" + id + "'>";
+			html += "<div class='btn-toolbar' role='toolbar'>";
+			html += "<div class='btn-group' role='group'>";
+			html += "<button type='button' class='btn btn-default btn-sm' onclick='edit_lc_begin(" +  id + ");' data-toggle='modall' data-target='.edit-lc-modall'>";
+			html += "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>";
+			html += "</button>";
 
-		html += "<div class='row'>";
-		html += "<button type='button' class='btn btn-default btn-sm col-sm-offset-11' onclick='reference_id=" +  id + ";' data-toggle='modal' data-target='.add-bc-modal'>";
-		html += "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Board change";
-		html += "</button>";
-		html += "</div><br>";
+			html += "<a href='history/" + id + "'><button type='button' class='btn btn-default btn-lg btn-sm'>";
+			html += "<span class='glyphicon glyphicon-film'></span>";
+			html += "</button></a>";
+			html += "</div>";
 
-		html += "<div class='panel panel-default'>";
-		html += "<div class='panel-heading' id='current_board_date" + id + "'>" + "</div>";
+			html += "<button type='button' class='btn btn-default btn-sm' onclick='reference_id=" +  id + ";' data-toggle='modal' data-target='.shred-lc-modal'>";
+			html += "<span class='glyphicon glyphicon-fire' aria-hidden='true'></span>";
+			html += "</button>";
+			html += "</div>";
+			html += "</td>";
 
-		html += "<table class='table table-hover current-board-table' id='current_board" + id + "'>";
-		html += "</table>";
-		html += "</div>";
-		html += "</td>";
+			// buttons end
 
-		html += "</tr>";
-	}
-	table.innerHTML = html;
 
-	for(var i = 0; i < lc_list.length; i++)
-	{
-		var id = lc_list[i].lc_id;
-		update_current_board(id);
-	}
+			html += "</tr>";
+
+			html += "<tr class='collapse' id='collapseExample" + id + "'><td colspan='9'>";
+			html += "<div id='display_" + id + "_lc_connection'>" +lc_list[i].lc_connection + "</div><br>";
+
+			html += "<div class='row'>";
+			html += "<button type='button' class='btn btn-default btn-sm col-sm-offset-11' onclick='reference_id=" +  id + ";' data-toggle='modal' data-target='.add-bc-modal'>";
+			html += "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Board change";
+			html += "</button>";
+			html += "</div><br>";
+
+			html += "<div class='panel panel-default'>";
+			html += "<div class='panel-heading' id='current_board_date" + id + "'>" + "</div>";
+
+			html += "<table class='table table-hover current-board-table' id='current_board" + id + "'>";
+			html += "</table>";
+			html += "</div>";
+			html += "</td>";
+
+			html += "</tr>";
+		}
+		table.innerHTML = html;
+
+		for(var i = 0; i < lc_list.length; i++)
+		{
+			var id = lc_list[i].lc_id;
+			update_current_board(id);
+		}
+	});
+
 }
 
 
 function update_current_board(lc_id)
 {
-	var data = get_current_board_change(lc_id, false);
-
-	header = document.getElementById("current_board_date" + lc_id);
-	table = document.getElementById("current_board" + lc_id);
-	if(data.board_change)
+	get_current_board_change(lc_id, function(data)
 	{
-		var html = "";
-		html += "<div class='container-fluid'><div class='row'><div class='col-sm-3'>Current board (since " + data.board_change.board_change_date + ")</div>";
-		html += "<button type='button' class='btn btn-default btn-xs col-sm-1 col-sm-offset-8' onclick='reference_id=" +  data.board_change.board_change_id + ";' data-toggle='modal' data-target='.add-pos-modal'>";
-		html += "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Position";
-		html += "</button></div></div>";
-		header.innerHTML = html;//"Current board (since " + data.board_change.board_change_date + ")";
-
-		if(data.positions.length)
+		header = document.getElementById("current_board_date" + lc_id);
+		table = document.getElementById("current_board" + lc_id);
+		if(data.board_change)
 		{
-			var html =  "<tr>" +
-						"<th>Position</th>" +
-						"<th>Name</th>" +
-						"<th>E-mail</th>" +
-						"<th>Phone</th>" +
-						"</tr>";
+			var html = "";
+			html += "<div class='container-fluid'><div class='row'><div class='col-sm-3'>Current board (since " + data.board_change.board_change_date + ")</div>";
+			html += "<button type='button' class='btn btn-default btn-xs col-sm-1 col-sm-offset-8' onclick='reference_id=" +  data.board_change.board_change_id + ";' data-toggle='modal' data-target='.add-pos-modal'>";
+			html += "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Position";
+			html += "</button></div></div>";
+			header.innerHTML = html;//"Current board (since " + data.board_change.board_change_date + ")";
 
-			for(var i = 0; i < data.positions.length; i++)
+			if(data.positions.length)
 			{
-				html += "<tr>";
-				
-				html += "<td>" + data.positions[i].position_title + "</td>";
-				html += "<td>" + data.positions[i].position_name + "</td>";
-				html += "<td>" + data.positions[i].position_mail + "</td>";
-				html += "<td>" + data.positions[i].position_phone + "</td>";
+				var html =  "<tr>" +
+							"<th>Position</th>" +
+							"<th>Name</th>" +
+							"<th>E-mail</th>" +
+							"<th>Phone</th>" +
+							"</tr>";
 
-				html += "</tr>";
+				for(var i = 0; i < data.positions.length; i++)
+				{
+					html += "<tr>";
+					
+					html += "<td>" + data.positions[i].position_title + "</td>";
+					html += "<td>" + data.positions[i].position_name + "</td>";
+					html += "<td>" + data.positions[i].position_mail + "</td>";
+					html += "<td>" + data.positions[i].position_phone + "</td>";
+
+					html += "</tr>";
+				}
+
+				table.innerHTML = html;
 			}
-
-			table.innerHTML = html;
+			else
+			{
+				table.innerHTML = "";
+			}
 		}
 		else
 		{
+			header.innerHTML = "";
 			table.innerHTML = "";
 		}
-	}
-	else
-	{
-		header.innerHTML = "";
-		table.innerHTML = "";
-	}
+	});
 }
 </script>
 
@@ -372,7 +364,7 @@ function update_current_board(lc_id)
 <div class="row"> 
     <div class="col-sm-2" style="height:130px;">
         <div class="form-group">
-            <div class='input-group date' id='datetimepicker10' onchange="console.log('bla');">
+            <div class='input-group date' id='datetimepicker10'>
                 <input type='text' class="form-control" />
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar">
@@ -390,13 +382,17 @@ function update_current_board(lc_id)
             });
 
             $('#datetimepicker10').on('dp.change', function (ev) {
-			    console.log(ev.date.format("YYYY-MM-DD"));
+			    temp_date = ev.date.format("YYYY-MM-DD");
 			});
         });
 
 
     </script>
-	<button type='button' class='btn btn-default btn-sm col-sm-offset-9' data-toggle='modal' data-target='.add-lc-modal'>
+    <button type='button' class='btn btn-default col-sm-1' onclick='current_date = temp_date; update_table();'>
+		<span class='glyphicon glyphicon-transfer' aria-hidden='true'></span> Time machine
+	</button>
+
+	<button type='button' class='btn btn-default col-sm-offset-8' data-toggle='modal' data-target='.add-lc-modal'>
 		<span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Commitment
 	</button>
 </div>
