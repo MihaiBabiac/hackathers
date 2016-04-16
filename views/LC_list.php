@@ -34,6 +34,10 @@
 	    -webkit-transition: none;
 	    transition: none;
 	}
+
+	.hidden {
+		display: none;
+	}
 </style>
 
 <script>
@@ -104,6 +108,16 @@ function add_lc(){
 	xhr.send(post_data);
 }
 
+function toggle_collapsed(id)
+{
+	$('#' + id).toggleClass('hidden');
+}
+
+function show_collapsed(id)
+{
+	$('#' + id).removeClass('hidden');
+}
+
 function edit_lc_begin(id)
 {
 	keys = ["lc_internal_name",
@@ -118,11 +132,25 @@ function edit_lc_begin(id)
 	for(var i = 0; i < keys.length; i++)
 	{
 		var element = document.getElementById("display_" + id + "_" + keys[i]);
-		if(!element)
-			console.log(keys[i]);
+		
 		var current_value = element.innerHTML;
-		document.getElementById("el_" + keys[i]).value = current_value;
+		//document.getElementById("el_" + keys[i]).value = current_value;
+		element.innerHTML = "<input type='text' onclick='event.stopPropagation()' class='form-control edit-lc' id='el_" + keys[i] + "' name='" + keys[i] + "' value='" + current_value + "'>"
+
+		if(i == 0)
+		{
+			element.firstChild.focus();
+		}
 	}
+
+	toolbar = document.getElementById("toolbar_" + id);
+	var html = "";
+	html += "<button type='button' class='btn btn-primary' onclick='edit_lc()'>Save</button>";
+	html += "<button type='button' class='btn btn-default' onclick='update_table();'>Cancel</button>";
+
+	toolbar.innerHTML = html;
+
+	show_collapsed("collapseExample" + id);
 
 	reference_id = id;
 }
@@ -207,22 +235,22 @@ function update_table()
 		{
 			var id = lc_list[i].lc_id;
 
-			html += "<tr class='lc-id-" + id + "'>";
+			html += "<tr class='lc-id-" + id + "' id='bla" + id + "' onclick='toggle_collapsed(\"collapseExample" + id + "\")'>";
 
 
-			html += "<td role='button' id='display_" + id + "_lc_internal_name' data-toggle='collapse' href='#collapseExample"+ id + "' >" 
+			html += "<td role='button' id='display_" + id + "_lc_internal_name'>" 
 					+ lc_list[i].lc_internal_name + "</td>";
-			html += "<td role='button' id='display_" + id + "_lc_reg_name' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+			html += "<td role='button' id='display_" + id + "_lc_reg_name'>" 
 					+ lc_list[i].lc_reg_name + "</td>";
-			html += "<td role='button' id='display_" + id + "_lc_city' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+			html += "<td role='button' id='display_" + id + "_lc_city'>" 
 					+ lc_list[i].lc_city + "</td>";
-			html += "<td role='button' id='display_" + id + "_lc_address' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+			html += "<td role='button' id='display_" + id + "_lc_address'>" 
 					+ lc_list[i].lc_address + "</td>";
-			html += "<td role='button' id='display_" + id + "_lc_post_code' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+			html += "<td role='button' id='display_" + id + "_lc_post_code'>" 
 					+ lc_list[i].lc_post_code + "</td>";
-			html += "<td role='button' id='display_" + id + "_lc_email' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+			html += "<td role='button' id='display_" + id + "_lc_email'>" 
 					+ lc_list[i].lc_email + "</td>";
-			html += "<td role='button' id='display_" + id + "_lc_site' data-toggle='collapse' href='#collapseExample"+ id + "'>" 
+			html += "<td role='button' id='display_" + id + "_lc_site'>" 
 					+ lc_list[i].lc_site + "</td>";
 
 
@@ -231,7 +259,7 @@ function update_table()
 			html += "<td id='toolbar_" + id + "'>";
 			html += "<div class='btn-toolbar' role='toolbar'>";
 			html += "<div class='btn-group' role='group'>";
-			html += "<button type='button' class='btn btn-default btn-sm' onclick='edit_lc_begin(" +  id + ");' data-toggle='modall' data-target='.edit-lc-modall'>";
+			html += "<button type='button' class='btn btn-default btn-sm' onclick='edit_lc_begin(" +  id + ");event.stopPropagation();' data-toggle='modall' data-target='.edit-lc-modall'>";
 			html += "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>";
 			html += "</button>";
 
@@ -251,7 +279,7 @@ function update_table()
 
 			html += "</tr>";
 
-			html += "<tr class='collapse' id='collapseExample" + id + "'><td colspan='9'>";
+			html += "<tr class='hidden' id='collapseExample" + id + "'><td colspan='9'>";
 			html += "<div id='display_" + id + "_lc_connection'>" +lc_list[i].lc_connection + "</div><br>";
 
 			html += "<div class='row'>";
@@ -431,7 +459,7 @@ function update_current_board(lc_id)
 					</div>
 					<div class="form-group">
 						<label for="al_lc_connection">Connection to EESTEC:</label>
-						<input type="text" class="form-control add-lc" id="al_lc_connection" name="lc_connection">
+						<textarea class="form-control add-lc" id="al_lc_connection" name="lc_connection"></textarea>
 					</div>
 					<div class="form-group">
 						<label for="al_lc_address">Address:</label>
@@ -527,7 +555,7 @@ function update_current_board(lc_id)
                     Add Commitment
                 </h4>
             </div>
-			
+<!--
 			<form role="form" action="edit_lc" method="post">
 
             <div class="modal-body">
@@ -566,7 +594,7 @@ function update_current_board(lc_id)
 					
 
 			</div>
-
+-->
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" onclick="edit_lc()" data-dismiss="modal">Save</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
